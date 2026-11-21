@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>A4 인쇄용 QR 포스터 · 홍익대 1학년 체조2</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .toolbar {
+      width: 210mm;
+      max-width: 100%;
+      background: #0f172a;
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .toolbar input {
+      flex: 1;
+      min-width: 240px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+    .toolbar button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-apply { background: #38bdf8; color: #082f49; }
+    .btn-print { background: #facc15; color: #0b1120; }
+
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      padding: 18mm 16mm;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+    }
+    .top-badge {
+      display: inline-block;
+      background: #0f172a;
+      color: #facc15;
+      font-size: 16pt;
+      font-weight: 900;
+      padding: 6px 22px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32pt;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      font-size: 16pt;
+      font-weight: 700;
+      color: #475569;
+      margin: 0;
+    }
+
+    .qr-box {
+      width: 118mm;
+      height: 118mm;
+      margin: 10mm auto 6mm;
+      padding: 6mm;
+      border: 4px solid #0f172a;
+      border-radius: 18px;
+      background: #fff;
+    }
+    .qr-box svg { width: 100%; height: 100%; display: block; }
+
+    .url-line {
+      display: inline-block;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12pt;
+      font-weight: 800;
+      color: #0f172a;
+      word-break: break-all;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10mm;
+      text-align: center;
+    }
+    .step {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 10px;
+    }
+    .step-n {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      border-radius: 50%;
+      background: #0f172a;
+      color: #facc15;
+      font-weight: 900;
+      font-size: 14pt;
+      margin-bottom: 8px;
+    }
+    .step h3 {
+      margin: 0 0 6px;
+      font-size: 14pt;
+      font-weight: 900;
+    }
+    .step p {
+      margin: 0;
+      font-size: 11pt;
+      color: #475569;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+    .foot {
+      margin-top: 8mm;
+      font-size: 11pt;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .toolbar { display: none; }
+      .sheet { box-shadow: none; width: 100%; min-height: auto; padding: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong style="font-size:14px;">포스터 QR 주소:</strong>
+    <input type="text" id="url-input" placeholder="https://배포주소/?mode=student" />
+    <button class="btn-apply" id="btn-apply">QR 갱신</button>
+    <button class="btn-print" onclick="window.print()">🖨️ A4 인쇄 / PDF 저장</button>
+  </div>
+
+  <div class="sheet">
+    <div>
+      <div class="top-badge">홍익대학교 1학년 · 체조2</div>
+      <h1>📱 QR 찍고 내 카드 뽑기!</h1>
+      <p class="subtitle">에어로빅장 매트에 앉자마자 카메라로 스캔하세요 (로그인·앱 설치 없음)</p>
+    </div>
+
+    <div>
+      <div class="qr-box" id="qr-box"></div>
+      <div class="url-line" id="url-line"></div>
+    </div>
+
+    <div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">1</div>
+          <h3>카메라로 스캔</h3>
+          <p>기본 카메라 앱을 열고 위 QR코드를 찍어 접속합니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <h3>내 번호(1~23) 터치</h3>
+          <p>출석 번호를 누르면 나만의 미션 카드 1장이 열립니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <h3>내 차례에 크게 읽기</h3>
+          <p>룰렛에 뽑히면 노란 박스의 한 줄을 읽고 미션 수행!</p>
+        </div>
+      </div>
+      <div class="foot">HONGIK UNIV. INDUSTRIAL SPORTS · 1회차 QR 미션 카드 쇼</div>
+    </div>
+  </div>
+
+  <script src="qr.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const input = document.getElementById('url-input');
+    const defaultUrl = params.get('url') || (window.location.href.replace(/qr_poster\.html.*/, 'index.html?mode=student'));
+    input.value = defaultUrl;
+
+    function draw(u) {
+      const url = (u || '').trim();
+      document.getElementById('url-line').textContent = url;
+      const box = document.getElementById('qr-box');
+      try {
+        box.innerHTML = window.HongikQR.makeQRSvg(url, 3);
+      } catch (e) {
+        box.innerHTML = '<p style="color:red;padding:20px;">' + e.message + '</p>';
+      }
+    }
+    document.getElementById('btn-apply').addEventListener('click', () => draw(input.value));
+    draw(defaultUrl);
+  </script>
+</body>
+</html>
