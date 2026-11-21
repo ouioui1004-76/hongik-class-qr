@@ -479,6 +479,45 @@
       letter-spacing: 0.02em;
     }
 
+    .device-box {
+      margin-top: 14px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1.5px solid rgba(52, 211, 153, 0.55);
+      border-radius: 14px;
+      padding: 13px 18px;
+      word-break: keep-all;
+    }
+    .device-box-title {
+      font-size: clamp(15px, 1.45vw, 19px);
+      font-weight: 900;
+      color: var(--green);
+      margin-bottom: 5px;
+    }
+    .device-box-body {
+      font-size: clamp(15px, 1.45vw, 20px);
+      color: #e2e8f0;
+      line-height: 1.48;
+    }
+    .st-device-box {
+      margin-bottom: 12px;
+      background: rgba(167, 139, 250, 0.14);
+      border: 1.5px solid rgba(167, 139, 250, 0.55);
+      border-radius: 12px;
+      padding: 12px 13px;
+      word-break: keep-all;
+    }
+    .st-device-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--purple);
+      margin-bottom: 4px;
+    }
+    .st-device-body {
+      font-size: 14px;
+      color: #f1f5f9;
+      line-height: 1.48;
+    }
+
     .host-tip-bar {
       background: rgba(15, 23, 42, 0.9);
       border: 1px dashed rgba(148, 163, 184, 0.4);
@@ -989,6 +1028,10 @@
       <div id="st-answer-box" class="stage-answer-box hidden">
         <div class="punchline-text" id="st-punchline"></div>
         <div class="explain-text" id="st-explain"></div>
+        <div class="device-box" id="st-device-box">
+          <div class="device-box-title" id="st-device-title"></div>
+          <div class="device-box-body" id="st-device-info"></div>
+        </div>
         <div class="mission-chip" id="st-mission"></div>
       </div>
 
@@ -1120,6 +1163,10 @@
           <button class="st-unlock-btn" id="m-unlock-btn">🔓 교수님 정답 공개 후 다 같이 읽기 &amp; 해설</button>
           <div class="st-answer-panel hidden" id="m-answer-panel">
             <div class="st-mission" id="m-mission" style="margin-bottom:12px;border-color:var(--cyan);background:rgba(56,189,248,0.16);color:#ffffff;font-size:17px;line-height:1.48;"></div>
+            <div class="st-device-box" id="m-device-box">
+              <div class="st-device-title" id="m-device-title"></div>
+              <div class="st-device-body" id="m-device-info"></div>
+            </div>
             <div class="ans-head" id="m-ans-head"></div>
             <div class="ans-body" id="m-ans-body"></div>
           </div>
@@ -1236,6 +1283,14 @@
           document.getElementById('m-sit').textContent = card.situation;
           document.getElementById('m-read').textContent = `“${card.readAloud}”`;
           document.getElementById('m-mission').innerHTML = `<div style="font-size:13px;color:#38bdf8;font-weight:900;margin-bottom:6px;">📣 다 같이 따라 읽기 (스포츠의학 핵심)</div>“${card.actionMission}”`;
+          const mDevBox = document.getElementById('m-device-box');
+          if (card.deviceTitle && card.deviceInfo) {
+            mDevBox.classList.remove('hidden');
+            document.getElementById('m-device-title').textContent = `🩺 치료기기·도구 기능 — ${card.deviceTitle}`;
+            document.getElementById('m-device-info').textContent = card.deviceInfo;
+          } else {
+            mDevBox.classList.add('hidden');
+          }
 
           const optWrap = document.getElementById('m-options');
           const pickedMsg = document.getElementById('m-picked-msg');
@@ -1344,6 +1399,14 @@
           document.getElementById('st-situation').textContent = `상황: ${card.situation}`;
           document.getElementById('st-question').textContent = card.readAloud;
           document.getElementById('st-mission').innerHTML = `<span class="mission-chip-label">📣 다 같이 따라 읽기 (스포츠의학 핵심)</span>“${card.actionMission}”`;
+          const stDevBox = document.getElementById('st-device-box');
+          if (card.deviceTitle && card.deviceInfo) {
+            stDevBox.classList.remove('hidden');
+            document.getElementById('st-device-title').textContent = `🩺 치료기기·도구 의학적 기능 — ${card.deviceTitle}`;
+            document.getElementById('st-device-info').textContent = card.deviceInfo;
+          } else {
+            stDevBox.classList.add('hidden');
+          }
           document.getElementById('st-punchline').textContent = `✅ ${card.punchline}`;
           document.getElementById('st-explain').textContent = card.explain;
           document.getElementById('st-host-tip').innerHTML = `<b>🎤 교수님 15초 멘트 팁:</b> ${card.hostTip}`;
