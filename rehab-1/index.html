@@ -458,17 +458,25 @@
     }
 
     .mission-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(236, 72, 153, 0.18);
-      border: 1px solid rgba(244, 114, 182, 0.5);
-      color: #fbcfe8;
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: clamp(15px, 1.4vw, 19px);
-      font-weight: 800;
-      margin-bottom: 14px;
+      display: block;
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(168, 85, 247, 0.22));
+      border: 2px solid var(--cyan);
+      color: #ffffff;
+      padding: 16px 20px;
+      border-radius: 16px;
+      font-size: clamp(21px, 2.2vw, 31px);
+      font-weight: 900;
+      line-height: 1.42;
+      word-break: keep-all;
+    }
+    .mission-chip-label {
+      display: block;
+      font-size: clamp(13px, 1.2vw, 16px);
+      font-weight: 900;
+      color: var(--cyan);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
     }
 
     .host-tip-bar {
@@ -981,9 +989,8 @@
       <div id="st-answer-box" class="stage-answer-box hidden">
         <div class="punchline-text" id="st-punchline"></div>
         <div class="explain-text" id="st-explain"></div>
+        <div class="mission-chip" id="st-mission"></div>
       </div>
-
-      <div class="mission-chip" id="st-mission"></div>
 
       <div id="st-host-tip" class="host-tip-bar hidden"></div>
 
@@ -1110,10 +1117,9 @@
           <div id="m-options"></div>
           <div id="m-picked-msg" class="st-picked-msg hidden">선택 완료! 교수님 신호가 나오면 크게 외쳐주세요 📣</div>
 
-          <div class="st-mission" id="m-mission"></div>
-
-          <button class="st-unlock-btn" id="m-unlock-btn">🔓 교수님 정답 공개 후 해설 보기</button>
+          <button class="st-unlock-btn" id="m-unlock-btn">🔓 교수님 정답 공개 후 다 같이 읽기 &amp; 해설</button>
           <div class="st-answer-panel hidden" id="m-answer-panel">
+            <div class="st-mission" id="m-mission" style="margin-bottom:12px;border-color:var(--cyan);background:rgba(56,189,248,0.16);color:#ffffff;font-size:17px;line-height:1.48;"></div>
             <div class="ans-head" id="m-ans-head"></div>
             <div class="ans-body" id="m-ans-body"></div>
           </div>
@@ -1229,7 +1235,7 @@
           document.getElementById('m-week').textContent = card.week;
           document.getElementById('m-sit').textContent = card.situation;
           document.getElementById('m-read').textContent = `“${card.readAloud}”`;
-          document.getElementById('m-mission').textContent = `🔥 보너스 미션: ${card.actionMission}`;
+          document.getElementById('m-mission').innerHTML = `<div style="font-size:13px;color:#38bdf8;font-weight:900;margin-bottom:6px;">📣 다 같이 따라 읽기 (스포츠의학 핵심)</div>“${card.actionMission}”`;
 
           const optWrap = document.getElementById('m-options');
           const pickedMsg = document.getElementById('m-picked-msg');
@@ -1251,14 +1257,14 @@
           const unlockBtn = document.getElementById('m-unlock-btn');
           const ansPanel = document.getElementById('m-answer-panel');
           ansPanel.classList.add('hidden');
-          unlockBtn.textContent = '🔓 교수님 정답 공개 후 해설 보기';
+          unlockBtn.textContent = '🔓 교수님 정답 공개 후 다 같이 읽기 & 해설';
           document.getElementById('m-ans-head').textContent = `정답 [${card.answerKey}] · ${card.punchline}`;
           document.getElementById('m-ans-body').textContent = card.explain;
 
           unlockBtn.onclick = () => {
             const isHidden = ansPanel.classList.contains('hidden');
             ansPanel.classList.toggle('hidden');
-            unlockBtn.textContent = isHidden ? '🔒 해설 접기' : '🔓 교수님 정답 공개 후 해설 보기';
+            unlockBtn.textContent = isHidden ? '🔒 접기' : '🔓 교수님 정답 공개 후 다 같이 읽기 & 해설';
           };
 
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1337,7 +1343,7 @@
           document.getElementById('st-week').textContent = card.week;
           document.getElementById('st-situation').textContent = `상황: ${card.situation}`;
           document.getElementById('st-question').textContent = card.readAloud;
-          document.getElementById('st-mission').textContent = `🔥 학생 미션: ${card.actionMission}`;
+          document.getElementById('st-mission').innerHTML = `<span class="mission-chip-label">📣 다 같이 따라 읽기 (스포츠의학 핵심)</span>“${card.actionMission}”`;
           document.getElementById('st-punchline').textContent = `✅ ${card.punchline}`;
           document.getElementById('st-explain').textContent = card.explain;
           document.getElementById('st-host-tip').innerHTML = `<b>🎤 교수님 15초 멘트 팁:</b> ${card.hostTip}`;
